@@ -102,14 +102,14 @@ class TelegramService:
         proposal_id = proposal['id']
         
         try:
+            # Format and send the proposal details
+            proposal_message = self._format_proposal_message(proposal)
+
             # Create a new forum topic for the proposal
             topic = await self.bot.create_forum_topic(
                 chat_id=chat_id,
                 name=f"Proposal #{proposal_id}"
             )
-            
-            # Format and send the proposal details
-            proposal_message = self._format_proposal_message(proposal)
             await self.bot.send_message(
                 chat_id=chat_id,
                 message_thread_id=topic.message_thread_id,

@@ -95,13 +95,6 @@ async def check_proposals(context: ContextTypes.DEFAULT_TYPE = None):
         if not proposals:
             return
 
-        # Get channels
-        governance_channel = 123#bot.get_channel(int(config["governanceChannelId"]))
-
-        if not governance_channel:
-            print(f"Error: Could not find channel: {governance_channel}")
-            return
-
         highest_new_id = last_new_id
         highest_end_id = last_end_id
 
@@ -109,7 +102,7 @@ async def check_proposals(context: ContextTypes.DEFAULT_TYPE = None):
             proposal_id = int(proposal['id'])
 
             # Check for new proposals
-            if proposal_id > last_new_id:
+            if proposal_id > last_new_id and proposal.get('status', '') in ['PROPOSAL_STATUS_VOTING_PERIOD']:
                 await send_new_proposal_notification(proposal)
                 highest_new_id = max(highest_new_id, proposal_id)
 
