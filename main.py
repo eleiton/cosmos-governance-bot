@@ -2,7 +2,7 @@ import requests
 import json
 import sys
 import asyncio
-from telegram.ext import ApplicationBuilder, ContextTypes
+from telegram.ext import ContextTypes
 from ai_service import AIService
 from telegram_service import TelegramService
 
@@ -132,11 +132,4 @@ if __name__ == "__main__":
         bot_token=config['telegramToken']
     )
 
-    app = ApplicationBuilder().token(config['telegramToken']).build()
-
-    # Schedule the background task to run every 30 minutes
-    job_queue = app.job_queue
-    job_queue.run_repeating(check_proposals, interval=30*60, first=1)  # 30 minutes, start after 1 second
-    
-    # Run the bot polling (this will block)
-    app.run_polling()
+    asyncio.run(check_proposals())
